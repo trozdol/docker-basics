@@ -4,10 +4,11 @@ networks:
   private-network: {}
 
 services:
-  
+
   frontend:
     container_name: frontend
-    image: arm64v8/nginx:1.23.2 # https://hub.docker.com/_/nginx
+    hostname: frontend
+    image: arm64v8/nginx:1.23.2 #  (arm64v8 == Apple M1 compatible version) https://hub.docker.com/_/nginx
     volumes:
       - ./frontend:/usr/share/nginx/html
     ports:
@@ -17,7 +18,8 @@ services:
 
   backend:
     container_name: backend
-    image: arm64v8/node:18 # https://hub.docker.com/_/node
+    hostname: backend
+    image: arm64v8/node:18 # (arm64v8 == Apple M1 compatible version) https://hub.docker.com/_/node
     working_dir: /usr/app
     environment:
       NODE_ENV: development
@@ -27,7 +29,6 @@ services:
       DATABASE_USER: test
       DATABASE_PASSWORD: test
       DATABASE_NAME: test
-    # command: npm start
     command: npm run dev
     volumes:
       - ./backend:/usr/app
@@ -38,7 +39,8 @@ services:
 
   database:
     container_name: database
-    image: arm64v8/mysql:latest # https://hub.docker.com/_/mysql
+    hostname: database
+    image: arm64v8/mysql:latest # (arm64v8 == Apple M1 compatible version) https://hub.docker.com/_/mysql
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: root
